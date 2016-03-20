@@ -26,19 +26,21 @@ namespace Albums.ModelView
 
         public void GetList()
         {
-            using (Stream stream = File.Open("albums.bin", FileMode.Open))
+            Albums = new ObservableCollection<AlbumModel>();
+            using (Stream stream = File.Open("albums.bin", FileMode.OpenOrCreate))
             {
                 var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 
-                Albums = (ObservableCollection<AlbumModel>)bformatter.Deserialize(stream);
+                if (stream.Length > 0)
+                    Albums = (ObservableCollection<AlbumModel>)bformatter.Deserialize(stream);
             }
 
             LinkCollection links = new LinkCollection();
             foreach (var album in Albums)
             {
-                links.Add(new Link() { DisplayName = album.Name });
+                links.Add(new Link() { DisplayName = album.Name, Source = new Uri("/Pages/Photo.xaml?albumId=" + album.Id, UriKind.Relative) });
             }
-            AlbumLinks = links;  
+            AlbumLinks = links;
         }
 
         public void SaveList()
@@ -47,8 +49,9 @@ namespace Albums.ModelView
             {
                 var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 
-                bformatter.Serialize(stream, Albums);
+                if (Albums.Count > 0)
+                    bformatter.Serialize(stream, Albums);
             }
-        } 
+        }
     }
 }
