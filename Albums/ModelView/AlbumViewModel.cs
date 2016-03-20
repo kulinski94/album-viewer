@@ -3,6 +3,7 @@ using FirstFloor.ModernUI.Presentation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,13 @@ namespace Albums.ModelView
 {
     class AlbumViewModel
     {
-        public LinkCollection Albums
+        public LinkCollection AlbumLinks
+        {
+            get;
+            set;
+        }
+
+        public ObservableCollection<AlbumModel> Albums
         {
             get;
             set;
@@ -19,22 +26,29 @@ namespace Albums.ModelView
 
         public void GetList()
         {
-            //TODO - get from file
-            ObservableCollection<AlbumModel> a = new ObservableCollection<AlbumModel>();
-            a.Add(new AlbumModel() { Name = "BirthDay - 2015", Id = 1 });
-            a.Add(new AlbumModel() { Name = "BirthDay - 2014", Id = 2 });
+            using (Stream stream = File.Open("albums.bin", FileMode.Open))
+            {
+                var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+
+                Albums = (ObservableCollection<AlbumModel>)bformatter.Deserialize(stream);
+            }
 
             LinkCollection links = new LinkCollection();
-            foreach (var album in a)
+            foreach (var album in Albums)
             {
                 links.Add(new Link() { DisplayName = album.Name });
             }
-            Albums = links;
+            AlbumLinks = links;  
         }
 
         public void SaveList()
         {
-            //TODO - save to file
-        }
+            using (Stream stream = File.Open("albums.bin", FileMode.Create))
+            {
+                var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+
+                bformatter.Serialize(stream, Albums);
+            }
+        } 
     }
 }

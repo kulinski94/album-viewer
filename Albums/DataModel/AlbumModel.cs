@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Albums.DataModel
 {
+    [Serializable]
     class AlbumModel : INotifyPropertyChanged
     {
         private String name;

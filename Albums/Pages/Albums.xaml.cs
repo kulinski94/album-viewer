@@ -25,7 +25,7 @@ namespace Albums.Pages
             InitializeComponent();
             albumViewModel = new AlbumViewModel();
             albumViewModel.GetList();
-            this.DataContext = albumViewModel.Albums;
+            this.DataContext = albumViewModel.AlbumLinks;
         }
        
     }
