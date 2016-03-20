@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Albums.ModelView;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,14 +16,17 @@ using System.Windows.Shapes;
 
 namespace Albums.Pages
 {
-    /// <summary>
-    /// Interaction logic for ListPage1.xaml
-    /// </summary>
-    public partial class ListPage1 : UserControl
+    public partial class Albums : UserControl
     {
-        public ListPage1()
+        private AlbumViewModel albumViewModel;
+
+        public Albums()
         {
             InitializeComponent();
+            albumViewModel = new AlbumViewModel();
+            albumViewModel.GetList();
+            this.DataContext = albumViewModel.Albums;
         }
+       
     }
 }
