@@ -8,35 +8,51 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Albums.ModelView
+namespace Albums.ViewModel
 {
-    class AlbumViewModel
+    public class AlbumViewModel
     {
-        public LinkCollection AlbumLinks
+        private LinkCollection albumLinks;
+        private ObservableCollection<AlbumModel> albumCollection;
+
+        public AlbumViewModel()
         {
-            get;
-            set;
+            GetList();
         }
 
-        public ObservableCollection<AlbumModel> Albums
+        public string ButtonContent
         {
-            get;
-            set;
+            get
+            {
+                return "Click Me";
+            }
+        }
+
+        public LinkCollection AlbumLinks
+        {
+            get { return albumLinks; }
+            set { albumLinks = value; }
+        }
+
+        public ObservableCollection<AlbumModel> AlbumCollection
+        {
+            get { return albumCollection; }
+            set { albumCollection = value; }
         }
 
         public void GetList()
         {
-            Albums = new ObservableCollection<AlbumModel>();
+            AlbumCollection = new ObservableCollection<AlbumModel>();
             using (Stream stream = File.Open("albums.bin", FileMode.OpenOrCreate))
             {
                 var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 
                 if (stream.Length > 0)
-                    Albums = (ObservableCollection<AlbumModel>)bformatter.Deserialize(stream);
+                    AlbumCollection = (ObservableCollection<AlbumModel>)bformatter.Deserialize(stream);
             }
 
             LinkCollection links = new LinkCollection();
-            foreach (var album in Albums)
+            foreach (var album in AlbumCollection)
             {
                 links.Add(new Link() { DisplayName = album.Name, Source = new Uri("/Pages/Photo.xaml?albumId=" + album.Id, UriKind.Relative) });
             }
@@ -49,8 +65,8 @@ namespace Albums.ModelView
             {
                 var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 
-                if (Albums.Count > 0)
-                    bformatter.Serialize(stream, Albums);
+                if (AlbumCollection.Count > 0)
+                    bformatter.Serialize(stream, AlbumCollection);
             }
         }
     }

@@ -4,10 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+             xmlns:ViewModel="clr-namespace:Albums.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.DataContext>
+        <ViewModel:AlbumViewModel/>
+    </UserControl.DataContext>
     <Grid Style="{StaticResource ContentRoot}">
-        <mui:ModernTab Layout="List"  Links="{Binding}">
+        <mui:ModernTab Layout="List"  Links="{Binding AlbumLinks}">
         </mui:ModernTab>
     </Grid>
 </UserControl>

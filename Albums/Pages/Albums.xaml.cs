@@ -1,5 +1,4 @@
-﻿using Albums.ModelView;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,14 +17,9 @@ namespace Albums.Pages
 {
     public partial class Albums : UserControl
     {
-        private AlbumViewModel albumViewModel;
-
         public Albums()
         {
             InitializeComponent();
-            albumViewModel = new AlbumViewModel();
-            albumViewModel.GetList();
-            this.DataContext = albumViewModel.AlbumLinks;
         }
        
     }

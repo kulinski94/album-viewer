@@ -81,7 +81,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Compile Include="ModelView\AlbumViewModel.cs" />
+    <Compile Include="ViewModel\AlbumViewModel.cs" />
     <Compile Include="Pages\Albums.xaml.cs">
       <DependentUpon>Albums.xaml</DependentUpon>
     </Compile>
