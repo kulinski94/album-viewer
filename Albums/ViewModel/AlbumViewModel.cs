@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Albums.ViewModel
 {
-    public class AlbumViewModel
+    public class AlbumViewModel : ObservableObject
     {
         private LinkCollection albumLinks;
         private ObservableCollection<AlbumModel> albumCollection;
@@ -20,24 +20,30 @@ namespace Albums.ViewModel
             GetList();
         }
 
-        public string ButtonContent
+        public LinkCollection AlbumLinks
         {
             get
             {
-                return "Click Me";
+                return albumLinks;
             }
-        }
-
-        public LinkCollection AlbumLinks
-        {
-            get { return albumLinks; }
-            set { albumLinks = value; }
+            set
+            {
+                albumLinks = value;
+                RaisePropertyChangedEvent("AlbumLinks");
+            }
         }
 
         public ObservableCollection<AlbumModel> AlbumCollection
         {
-            get { return albumCollection; }
-            set { albumCollection = value; }
+            get
+            {
+                return albumCollection;
+            }
+            set
+            {
+                albumCollection = value;
+                RaisePropertyChangedEvent("AlbumCollection");
+            }
         }
 
         public void GetList()
