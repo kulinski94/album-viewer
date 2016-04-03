@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace Albums.ViewModel
@@ -15,21 +16,52 @@ namespace Albums.ViewModel
     public class AlbumViewModel : ObservableObject
     {
         private ObservableCollection<AlbumModel> albumCollection;
-
+        private AlbumModel selectedAlbum;
+        private String albumName;
         public AlbumViewModel()
         {
             GetList();
         }
-
-        public BitmapImage Image
+        public String AlbumName
         {
             get
             {
-                BitmapImage logo = new BitmapImage();
-                logo.BeginInit();
-                logo.UriSource = new Uri("E:/PTS - kursova/album1/image1.jpg");
-                logo.EndInit();
-                return logo;
+                return albumName;
+            }
+            set
+            {
+                albumName = value;
+                RaisePropertyChangedEvent("AlbumName");
+            }
+        }
+
+        public ICommand CreateAlbum
+        {
+            get { return new DelegateCommand(create); }
+        }
+
+        public void create()
+        {
+            AlbumModel am = new AlbumModel();
+            am.Id = new Random().Next();
+            am.Name = AlbumName;
+            AlbumCollection.Add(am);
+            Console.WriteLine("Added new album:" + am);
+            Console.WriteLine("Added new album:" + AlbumCollection.Count);
+            RaisePropertyChangedEvent("AlbumCollection");
+            SaveList();
+        }
+
+        public AlbumModel SelectedAlbum
+        {
+            get
+            {
+                return selectedAlbum;
+            }
+            set
+            {
+                selectedAlbum = value;
+                RaisePropertyChangedEvent("SelectedAlbum");
             }
         }
 
@@ -60,7 +92,7 @@ namespace Albums.ViewModel
 
         public void SaveList()
         {
-            using (Stream stream = File.Open("albums.bin", FileMode.Create))
+            using (Stream stream = File.Open("./albums.bin", FileMode.Create))
             {
                 var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 
