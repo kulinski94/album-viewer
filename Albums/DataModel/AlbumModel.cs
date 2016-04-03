@@ -8,16 +8,14 @@ using System.Threading.Tasks;
 namespace Albums.DataModel
 {
     [Serializable]
-    public class AlbumModel : INotifyPropertyChanged
+    public class AlbumModel
     {
         private String name;
         private int id;
-
-        public event PropertyChangedEventHandler PropertyChanged;
+        private List<PhotoModel> photos;
 
         public AlbumModel()
         {
-
         }
 
         public int Id
@@ -29,11 +27,25 @@ namespace Albums.DataModel
 
         public String Name
         {
-            get { return name; }
+            get
+            {
+                return name;
+            }
             set
             {
                 name = value;
-                //PropertyChanged(this, new PropertyChangedEventArgs("Name"));
+            }
+        }
+
+        public List<PhotoModel> Photos
+        {
+            get
+            {
+                return photos;
+            }
+            set
+            {
+                photos = value;
             }
         }
 

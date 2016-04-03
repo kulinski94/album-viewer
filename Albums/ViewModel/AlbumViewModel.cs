@@ -7,12 +7,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace Albums.ViewModel
 {
     public class AlbumViewModel : ObservableObject
     {
-        private LinkCollection albumLinks;
         private ObservableCollection<AlbumModel> albumCollection;
 
         public AlbumViewModel()
@@ -20,16 +21,15 @@ namespace Albums.ViewModel
             GetList();
         }
 
-        public LinkCollection AlbumLinks
+        public BitmapImage Image
         {
             get
             {
-                return albumLinks;
-            }
-            set
-            {
-                albumLinks = value;
-                RaisePropertyChangedEvent("AlbumLinks");
+                BitmapImage logo = new BitmapImage();
+                logo.BeginInit();
+                logo.UriSource = new Uri("E:/PTS - kursova/album1/image1.jpg");
+                logo.EndInit();
+                return logo;
             }
         }
 
@@ -56,13 +56,6 @@ namespace Albums.ViewModel
                 if (stream.Length > 0)
                     AlbumCollection = (ObservableCollection<AlbumModel>)bformatter.Deserialize(stream);
             }
-
-            LinkCollection links = new LinkCollection();
-            foreach (var album in AlbumCollection)
-            {
-                links.Add(new Link() { DisplayName = album.Name, Source = new Uri("/Pages/Photo.xaml?albumId=" + album.Id, UriKind.Relative) });
-            }
-            AlbumLinks = links;
         }
 
         public void SaveList()
