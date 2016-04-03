@@ -48,6 +48,9 @@ namespace Albums.DataModel
                 photos = value;
             }
         }
-
+        public override String ToString()
+        {
+            return Name;
+        }
     }
 }

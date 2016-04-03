@@ -1,6 +1,7 @@
 ﻿using Albums.DataModel;
 using FirstFloor.ModernUI.Presentation;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -61,6 +62,7 @@ namespace Albums.ViewModel
             set
             {
                 selectedAlbum = value;
+                Console.WriteLine("Selected Album Chnaged");
                 RaisePropertyChangedEvent("SelectedAlbum");
             }
         }
@@ -88,6 +90,12 @@ namespace Albums.ViewModel
                 if (stream.Length > 0)
                     AlbumCollection = (ObservableCollection<AlbumModel>)bformatter.Deserialize(stream);
             }
+
+            List<PhotoModel> photos = new List<PhotoModel>();
+            photos.Add(new PhotoModel("E:/image1.jpg", "Photo1"));
+            photos.Add(new PhotoModel("E:/image2.jpg", "Photo2"));
+            AlbumCollection.ElementAt(0).Photos = photos;
+            SelectedAlbum = AlbumCollection.ElementAt(0);
         }
 
         public void SaveList()

@@ -11,15 +11,23 @@
         <ViewModel:AlbumViewModel/>
     </UserControl.DataContext>
     <Grid Style="{StaticResource ContentRoot}">
-        <ListView ItemsSource="{Binding AlbumCollection}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel>
-                        <TextBlock Text="{Binding Name}" Style="{StaticResource Heading2}" Margin="0,0,0,8" />
-                        <Image Source="E:/PTS - kursova/album1/image1.jpg" />
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <WrapPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <ComboBox DisplayMemberPath="Name" ItemsSource="{Binding AlbumCollection}" SelectedIndex="0" SelectedItem="{Binding SelectedAlbum}">
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <ListView ItemsSource="{Binding SelectedAlbum.Photos}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Name}" Style="{StaticResource Heading2}" Margin="0,0,0,8" />
+                                <Image Source="{Binding Source}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+        </WrapPanel>
     </Grid>
 </UserControl>
