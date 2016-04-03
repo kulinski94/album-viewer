@@ -13,8 +13,13 @@
     <Grid Style="{StaticResource ContentRoot}">
         <WrapPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
-                <ComboBox DisplayMemberPath="Name" ItemsSource="{Binding AlbumCollection}" SelectedIndex="0" SelectedItem="{Binding SelectedAlbum}">
+                <Label Width="100">Select Album</Label>
+                <ComboBox DisplayMemberPath="Name" ItemsSource="{Binding AlbumCollection}" SelectedIndex="0" SelectedItem="{Binding SelectedAlbum}" Width="100">
                 </ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Width="100">Add Photo </Label>
+                <Button Name="btnOpenFile" Command="{Binding AddPhoto}" Width="100">Open file</Button>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <ListView ItemsSource="{Binding SelectedAlbum.Photos}">

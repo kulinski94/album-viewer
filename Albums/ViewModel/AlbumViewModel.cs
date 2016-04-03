@@ -1,5 +1,6 @@
 ﻿using Albums.DataModel;
 using FirstFloor.ModernUI.Presentation;
+using Microsoft.Win32;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -53,6 +54,23 @@ namespace Albums.ViewModel
             SaveList();
         }
 
+        public ICommand AddPhoto
+        {
+            get { return new DelegateCommand(addPhotoToSelectedAlbum); }
+        }
+
+        public void addPhotoToSelectedAlbum()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                PhotoModel ph = new PhotoModel(openFileDialog.FileName, openFileDialog.SafeFileName);
+                Console.WriteLine(openFileDialog.FileName);
+                SelectedAlbum.addPhoto(ph);
+                RaisePropertyChangedEvent("SelectedAlbum");
+            }
+        }
+
         public AlbumModel SelectedAlbum
         {
             get
@@ -62,7 +80,6 @@ namespace Albums.ViewModel
             set
             {
                 selectedAlbum = value;
-                Console.WriteLine("Selected Album Chnaged");
                 RaisePropertyChangedEvent("SelectedAlbum");
             }
         }

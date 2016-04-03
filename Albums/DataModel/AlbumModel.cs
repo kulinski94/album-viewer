@@ -52,5 +52,15 @@ namespace Albums.DataModel
         {
             return Name;
         }
+
+        public void addPhoto(PhotoModel photo)
+        {
+            if(Photos == null)
+            {
+                Photos = new List<PhotoModel>();
+            }
+
+            Photos.Add(photo);
+        }
     }
 }
