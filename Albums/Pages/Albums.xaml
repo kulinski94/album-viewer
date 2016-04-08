@@ -6,7 +6,7 @@
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              xmlns:ViewModel="clr-namespace:Albums.ViewModel"
              mc:Ignorable="d"
-             d:DesignHeight="400" Width="692.5">
+             d:DesignHeight="500" Width="792.5">
 
     <UserControl.DataContext>
         <ViewModel:AlbumViewModel/>
@@ -29,15 +29,15 @@
             <Button Name="btnDeleteAlbum" Command="{Binding DeleteAlbum}" Width="100">Delete</Button>
         </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1">
-            <Button Name="btnOpenFile" Command="{Binding AddPhoto}" Width="100">Add photo</Button>
-            <Button Name="btnDeletePhoto" Command="{Binding DeletePhoto}" Width="100">DeletePhoto</Button>
+            <Button Name="btnOpenFile" Command="{Binding AddPhoto}" Width="110">Add photo</Button>
+            <Button Name="btnDeletePhoto" Command="{Binding DeletePhoto}" Width="110">Delete Photo</Button>
         </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="2">
             <TextBox Text="{Binding AlbumName}" Width="100"/>
             <Button Width="100" Content="New Album" Command="{Binding CreateAlbum}"/>
         </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="3">
-            <Button Name="btnNextPhoto" Command="{Binding NextPhoto}" Width="100">NEXT</Button>
+            <Button Name="btnNextPhoto" Command="{Binding NextPhoto}" Width="100">Next</Button>
             <Button Name="btnPrevPhoto" Command="{Binding PreviousPhoto}" Width="100">Previous</Button>
         </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Row="2" Grid.ColumnSpan="4">
