@@ -5,8 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              xmlns:ViewModel="clr-namespace:Albums.ViewModel"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" Width="592.5">
+             mc:Ignorable="d"
+             d:DesignHeight="400" Width="692.5">
+
     <UserControl.DataContext>
         <ViewModel:AlbumViewModel/>
     </UserControl.DataContext>
@@ -18,40 +19,31 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="2*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0">
-            <Label Width="100">Select Album</Label>
             <ComboBox DisplayMemberPath="Name" ItemsSource="{Binding AlbumCollection}" SelectedIndex="0" SelectedItem="{Binding SelectedAlbum}" Width="100">
             </ComboBox>
-        </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1">
-            <Label Width="100">Delete Album</Label>
             <Button Name="btnDeleteAlbum" Command="{Binding DeleteAlbum}" Width="100">Delete</Button>
         </StackPanel>
+        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1">
+            <Button Name="btnOpenFile" Command="{Binding AddPhoto}" Width="100">Add photo</Button>
+            <Button Name="btnDeletePhoto" Command="{Binding DeletePhoto}" Width="100">DeletePhoto</Button>
+        </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="2">
-            <Label Width="100">Add Photo</Label>
-            <Button Name="btnOpenFile" Command="{Binding AddPhoto}" Width="100">Browse..</Button>
+            <TextBox Text="{Binding AlbumName}" Width="100"/>
+            <Button Width="100" Content="New Album" Command="{Binding CreateAlbum}"/>
         </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="3">
-            <Label Width="100">AlbumName:</Label>
-            <TextBox Text="{Binding AlbumName}" Width="100"/>
-            <Button Width="100" Content="Create" Command="{Binding CreateAlbum}"/>
+            <Button Name="btnNextPhoto" Command="{Binding NextPhoto}" Width="100">NEXT</Button>
+            <Button Name="btnPrevPhoto" Command="{Binding PreviousPhoto}" Width="100">Previous</Button>
         </StackPanel>
-        <WrapPanel Grid.Row="1" Grid.ColumnSpan="4">
-            <StackPanel Orientation="Horizontal">
-                <ListView ItemsSource="{Binding SelectedAlbum.Photos}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Text="{Binding Name}" Style="{StaticResource Heading2}" Margin="0,0,0,8" />
-                                <Image Source="{Binding Source}" Stretch="None"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </StackPanel>
-        </WrapPanel>
+        <StackPanel Orientation="Vertical" Grid.Row="2" Grid.ColumnSpan="4">
+            <Viewbox>
+            <Image Source="{Binding SelectedPhoto.Source}" RenderOptions.BitmapScalingMode="Fant" Stretch="Fill" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+            </Viewbox>
+        </StackPanel>
     </Grid>
 </UserControl>

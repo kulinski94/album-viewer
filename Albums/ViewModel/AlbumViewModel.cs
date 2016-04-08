@@ -20,6 +20,7 @@ namespace Albums.ViewModel
         private ObservableCollection<AlbumModel> albumCollection;
         private AlbumModel selectedAlbum;
         private String albumName;
+        private PhotoModel selectedPhotoModel;
         public AlbumViewModel()
         {
             GetList();
@@ -36,6 +37,41 @@ namespace Albums.ViewModel
                 RaisePropertyChangedEvent("AlbumName");
             }
         }
+        public PhotoModel SelectedPhoto
+        {
+            get
+            {
+                return selectedPhotoModel;
+            }
+            set
+            {
+                selectedPhotoModel = value;
+                RaisePropertyChangedEvent("SelectedPhoto");
+            }
+        }
+        public ICommand NextPhoto
+        {
+            get { return new DelegateCommand(nextPhoto); }
+        }
+
+        private void nextPhoto()
+        {
+            int index = SelectedAlbum.Photos.IndexOf(SelectedPhoto);
+            if (selectedAlbum.Photos.Count > index + 1)
+                SelectedPhoto = SelectedAlbum.Photos.ElementAt(++index);
+        }
+
+        public ICommand PreviousPhoto
+        {
+            get { return new DelegateCommand(previousPhoto); }
+        }
+
+        private void previousPhoto()
+        {
+            int index = SelectedAlbum.Photos.IndexOf(SelectedPhoto);
+            if (selectedAlbum.Photos.Count > 0 && index > 0)
+                SelectedPhoto = SelectedAlbum.Photos.ElementAt(--index);
+        }
 
         public ICommand CreateAlbum
         {
@@ -44,13 +80,17 @@ namespace Albums.ViewModel
 
         public void create()
         {
+            if(AlbumName == null || AlbumName == "")
+            {
+                return;
+            }
             AlbumModel am = new AlbumModel();
             am.Id = new Random().Next();
             am.Name = AlbumName;
+            am.Photos = new List<PhotoModel>();
             AlbumCollection.Add(am);
-            Console.WriteLine("Added new album:" + am);
-            Console.WriteLine("Added new album:" + AlbumCollection.Count);
             RaisePropertyChangedEvent("AlbumCollection");
+            SelectedAlbum = am;
             SaveList();
         }
 
@@ -66,8 +106,12 @@ namespace Albums.ViewModel
             {
                 PhotoModel ph = new PhotoModel(openFileDialog.FileName, openFileDialog.SafeFileName);
                 Console.WriteLine(openFileDialog.FileName);
-                SelectedAlbum.addPhoto(ph);
-                RaisePropertyChangedEvent("SelectedAlbum");
+                AlbumModel album = SelectedAlbum;
+                SelectedAlbum = null;
+                album.addPhoto(ph);
+                SelectedAlbum = album;
+                SelectedPhoto = ph;
+                SaveList();
             }
         }
 
@@ -75,9 +119,25 @@ namespace Albums.ViewModel
         {
             get { return new DelegateCommand(deleteAlbum); }
         }
+
+        public ICommand DeletePhoto
+        {
+            get { return new DelegateCommand(deletePhoto); }
+        }
+        public void deletePhoto()
+        {            
+            SelectedAlbum.Photos.Remove(SelectedPhoto);
+            if (SelectedAlbum.Photos.Count > 0)
+                SelectedPhoto = SelectedAlbum.Photos.ElementAt(0);
+            SaveList();
+        }
+
         public void deleteAlbum()
         {
             AlbumCollection.Remove(selectedAlbum);
+            if (AlbumCollection.Count > 0)
+                SelectedAlbum = AlbumCollection.ElementAt(0);
+            SaveList();
         }
 
         public AlbumModel SelectedAlbum
@@ -88,7 +148,19 @@ namespace Albums.ViewModel
             }
             set
             {
+                if (value == null)
+                {
+                    return;
+                }
                 selectedAlbum = value;
+                if (selectedAlbum.Photos.Count > 0)
+                {
+                    SelectedPhoto = selectedAlbum.Photos.ElementAt(0);
+                }
+                else
+                {
+                    SelectedPhoto = null;
+                }
                 RaisePropertyChangedEvent("SelectedAlbum");
             }
         }
@@ -115,12 +187,11 @@ namespace Albums.ViewModel
 
                 if (stream.Length > 0)
                     AlbumCollection = (ObservableCollection<AlbumModel>)bformatter.Deserialize(stream);
+
+                stream.Close();
             }
 
             List<PhotoModel> photos = new List<PhotoModel>();
-            photos.Add(new PhotoModel("E:/image1.jpg", "Photo1"));
-            photos.Add(new PhotoModel("E:/image2.jpg", "Photo2"));
-            AlbumCollection.ElementAt(0).Photos = photos;
             SelectedAlbum = AlbumCollection.ElementAt(0);
         }
 
@@ -132,6 +203,8 @@ namespace Albums.ViewModel
 
                 if (AlbumCollection.Count > 0)
                     bformatter.Serialize(stream, AlbumCollection);
+
+                Console.WriteLine("Save albums to file");
             }
         }
     }
