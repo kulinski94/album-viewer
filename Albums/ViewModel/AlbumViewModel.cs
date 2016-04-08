@@ -71,6 +71,15 @@ namespace Albums.ViewModel
             }
         }
 
+        public ICommand DeleteAlbum
+        {
+            get { return new DelegateCommand(deleteAlbum); }
+        }
+        public void deleteAlbum()
+        {
+            AlbumCollection.Remove(selectedAlbum);
+        }
+
         public AlbumModel SelectedAlbum
         {
             get
