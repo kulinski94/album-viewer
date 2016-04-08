@@ -6,7 +6,7 @@
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              xmlns:ViewModel="clr-namespace:Albums.ViewModel"
              mc:Ignorable="d"
-             d:DesignHeight="500" Width="792.5">
+             d:DesignHeight="400" Width="750.5">
 
     <UserControl.DataContext>
         <ViewModel:AlbumViewModel/>
@@ -24,7 +24,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0">
-            <ComboBox DisplayMemberPath="Name" ItemsSource="{Binding AlbumCollection}" SelectedIndex="0" SelectedItem="{Binding SelectedAlbum}" Width="100">
+            <ComboBox HorizontalAlignment="Stretch" DisplayMemberPath="Name" ItemsSource="{Binding AlbumCollection}" SelectedIndex="0" SelectedItem="{Binding SelectedAlbum}" Width="100">
             </ComboBox>
             <Button Name="btnDeleteAlbum" Command="{Binding DeleteAlbum}" Width="100">Delete</Button>
         </StackPanel>

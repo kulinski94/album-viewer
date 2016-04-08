@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -19,13 +20,13 @@ namespace Albums.ViewModel
     {
         private ObservableCollection<AlbumModel> albumCollection;
         private AlbumModel selectedAlbum;
-        private String albumName;
+        private string albumName;
         private PhotoModel selectedPhotoModel;
         public AlbumViewModel()
         {
             GetList();
         }
-        public String AlbumName
+        public string AlbumName
         {
             get
             {
@@ -80,8 +81,14 @@ namespace Albums.ViewModel
 
         public void create()
         {
-            if(AlbumName == null || AlbumName == "")
+            if (AlbumName == null || AlbumName == "")
             {
+                MessageBox.Show("Invalid AlbumName!");
+                return;
+            }
+            if (albumAlreadyExists(AlbumName))
+            {
+                MessageBox.Show("Album with this name already exists");
                 return;
             }
             AlbumModel am = new AlbumModel();
@@ -92,6 +99,16 @@ namespace Albums.ViewModel
             RaisePropertyChangedEvent("AlbumCollection");
             SelectedAlbum = am;
             SaveList();
+        }
+
+        private bool albumAlreadyExists(string albumName)
+        {
+            foreach (AlbumModel a in AlbumCollection)
+            {
+                if (albumName.Equals(a.Name))
+                    return true;
+            }
+            return false;
         }
 
         public ICommand AddPhoto
@@ -125,7 +142,7 @@ namespace Albums.ViewModel
             get { return new DelegateCommand(deletePhoto); }
         }
         public void deletePhoto()
-        {            
+        {
             SelectedAlbum.Photos.Remove(SelectedPhoto);
             if (SelectedAlbum.Photos.Count > 0)
                 SelectedPhoto = SelectedAlbum.Photos.ElementAt(0);
