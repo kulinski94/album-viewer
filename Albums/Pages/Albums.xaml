@@ -12,6 +12,7 @@
         <ViewModel:AlbumViewModel/>
     </UserControl.DataContext>
     <Grid Style="{StaticResource ContentRoot}">
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
@@ -19,9 +20,9 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="20" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="60" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0">
             <ComboBox HorizontalAlignment="Stretch" DisplayMemberPath="Name" ItemsSource="{Binding AlbumCollection}" SelectedIndex="0" SelectedItem="{Binding SelectedAlbum}" Width="100">
@@ -36,14 +37,23 @@
             <TextBox Text="{Binding AlbumName}" Width="100"/>
             <Button Width="100" Content="New Album" Command="{Binding CreateAlbum}"/>
         </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="3">
-            <Button Name="btnNextPhoto" Command="{Binding NextPhoto}" Width="100">Next</Button>
-            <Button Name="btnPrevPhoto" Command="{Binding PreviousPhoto}" Width="100">Previous</Button>
-        </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Row="2" Grid.ColumnSpan="4">
-            <Viewbox>
-            <Image Source="{Binding SelectedPhoto.Source}" RenderOptions.BitmapScalingMode="Fant" Stretch="Fill" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Center"/>
-            </Viewbox>
-        </StackPanel>
+        <Viewbox Grid.Row="1" Grid.ColumnSpan="4">
+            <Image Source="{Binding SelectedPhoto.Source}" RenderOptions.BitmapScalingMode="Fant" Stretch="Fill" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Center"></Image>
+        </Viewbox>
+        <Button  Name="btnPrevPhoto" Grid.Row="3" Grid.Column="0" Command="{Binding PreviousPhoto}" >
+            <Button.Template>
+                <ControlTemplate>
+                    <Image Source="../left.ico" Stretch="Fill"/>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+        <Button Name="btnNextPhoto" Grid.Row="3" Grid.Column="3" Command="{Binding NextPhoto}">
+            <Button.Template>
+                <ControlTemplate>
+                    <Image Source="../right.ico" Stretch="Fill"/>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
     </Grid>
 </UserControl>

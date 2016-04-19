@@ -13,7 +13,6 @@ namespace Albums.DataModel
         private String name;
         private int id;
         private List<PhotoModel> photos;
-
         public AlbumModel()
         {
         }

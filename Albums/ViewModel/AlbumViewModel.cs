@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace Albums.ViewModel
@@ -99,6 +100,21 @@ namespace Albums.ViewModel
             RaisePropertyChangedEvent("AlbumCollection");
             SelectedAlbum = am;
             SaveList();
+        }
+
+        public ICommand RotatePhoto
+        {
+            get { return new DelegateCommand(Rotate); }
+        }
+
+        private void Rotate()
+        {
+            
+            BitmapSource img = new BitmapImage(new Uri(selectedPhotoModel.Source));           
+
+            CachedBitmap cache = new CachedBitmap(img, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+            BitmapSource photo = BitmapFrame.Create(new TransformedBitmap(cache, new RotateTransform(90.0)));
+            
         }
 
         private bool albumAlreadyExists(string albumName)
