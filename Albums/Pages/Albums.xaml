@@ -31,7 +31,6 @@
         </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1">
             <Button Name="btnOpenFile" Command="{Binding AddPhoto}" Width="110">Add photo</Button>
-            <Button Name="btnDeletePhoto" Command="{Binding DeletePhoto}" Width="110">Delete Photo</Button>
         </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="2">
             <TextBox Text="{Binding AlbumName}" Width="100"/>
@@ -52,6 +51,14 @@
             <Button.Template>
                 <ControlTemplate>
                     <Image Source="../right.ico" Stretch="Fill"/>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+        <Button Name="btnDeletePhoto" Grid.Row="3" Grid.Column="1" Command="{Binding DeletePhoto}" Width="110">
+            <Button.Template>
+                <ControlTemplate>
+                    <Image Source="../delete.jpg" Stretch="Fill"/>
                 </ControlTemplate>
             </Button.Template>
         </Button>

@@ -149,6 +149,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="delete.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="left.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
