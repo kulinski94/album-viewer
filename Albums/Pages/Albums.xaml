@@ -20,22 +20,22 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="60" />
+            <RowDefinition Height="30" />
             <RowDefinition Height="*" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0">
-            <ComboBox HorizontalAlignment="Stretch" DisplayMemberPath="Name" ItemsSource="{Binding AlbumCollection}" SelectedIndex="0" SelectedItem="{Binding SelectedAlbum}" Width="100">
-            </ComboBox>
-            <Button Name="btnDeleteAlbum" Command="{Binding DeleteAlbum}" Width="100">Delete</Button>
+
+        <StackPanel Orientation="Horizontal" Grid.ColumnSpan="4" Grid.Row="0" Margin="0,0,0,10">
+            <Button Width="80" Command="{Binding ChangeDirectory}">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Source="../folder.jpg" Stretch="Fill"/>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <TextBox Name="ImagesDir" Text="{Binding DirectoryPath}" Margin="10,0" Width="200"/>
         </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1">
-            <Button Name="btnOpenFile" Command="{Binding AddPhoto}" Width="110">Add photo</Button>
-        </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="2">
-            <TextBox Text="{Binding AlbumName}" Width="100"/>
-            <Button Width="100" Content="New Album" Command="{Binding CreateAlbum}"/>
-        </StackPanel>
+
         <Viewbox Grid.Row="1" Grid.ColumnSpan="4">
             <Image Source="{Binding SelectedPhoto.Source}" RenderOptions.BitmapScalingMode="Fant" Stretch="Fill" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Center"></Image>
         </Viewbox>

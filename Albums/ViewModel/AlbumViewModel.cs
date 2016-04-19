@@ -1,6 +1,7 @@
 ﻿using Albums.DataModel;
 using FirstFloor.ModernUI.Presentation;
 using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,10 +24,24 @@ namespace Albums.ViewModel
         private AlbumModel selectedAlbum;
         private string albumName;
         private PhotoModel selectedPhotoModel;
+        private string directoryPath;
         public AlbumViewModel()
         {
-            GetList();
         }
+        public string DirectoryPath
+        {
+            get
+            {
+                return directoryPath;
+            }
+            set
+            {
+                directoryPath = value;
+                RaisePropertyChangedEvent("DirectoryPath");
+                loadImagesFromDirectory();
+            }
+        }
+
         public string AlbumName
         {
             get
@@ -102,21 +117,6 @@ namespace Albums.ViewModel
             SaveList();
         }
 
-        public ICommand RotatePhoto
-        {
-            get { return new DelegateCommand(Rotate); }
-        }
-
-        private void Rotate()
-        {
-            
-            BitmapSource img = new BitmapImage(new Uri(selectedPhotoModel.Source));           
-
-            CachedBitmap cache = new CachedBitmap(img, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
-            BitmapSource photo = BitmapFrame.Create(new TransformedBitmap(cache, new RotateTransform(90.0)));
-            
-        }
-
         private bool albumAlreadyExists(string albumName)
         {
             foreach (AlbumModel a in AlbumCollection)
@@ -146,6 +146,41 @@ namespace Albums.ViewModel
                 SelectedPhoto = ph;
                 SaveList();
             }
+        }
+
+        public ICommand ChangeDirectory
+        {
+            get { return new DelegateCommand(changeDir); }
+        }
+
+        public void changeDir()
+        {
+            var dialog = new CommonOpenFileDialog();
+            dialog.IsFolderPicker = true;
+            CommonFileDialogResult result = dialog.ShowDialog();
+            if (result.Equals(CommonFileDialogResult.Ok))
+            {
+                DirectoryPath = dialog.FileName;
+            }
+        }
+
+        private void loadImagesFromDirectory()
+        {
+            if (!Directory.Exists(DirectoryPath))
+                return;
+
+            string[] files = Directory.GetFiles(DirectoryPath);
+            AlbumModel am = new AlbumModel();
+            am.Photos = new List<PhotoModel>();
+            foreach (string source in files)
+            {
+                if (File.Exists(source) && (source.ToLower().EndsWith("jpg") || source.ToLower().EndsWith("png")))
+                {
+                    PhotoModel ph = new PhotoModel(source, source);
+                    am.Photos.Add(ph);
+                }
+            }
+            SelectedAlbum = am;
         }
 
         public ICommand DeleteAlbum
