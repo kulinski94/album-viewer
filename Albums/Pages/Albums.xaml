@@ -26,7 +26,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Grid.ColumnSpan="4" Grid.Row="0" Margin="0,0,0,10">
-            <Button Width="80" Command="{Binding ChangeDirectory}">
+            <Button Width="80" Command="{Binding ChangeDirectory}" ToolTip="Choose Folder">
                 <Button.Template>
                     <ControlTemplate>
                         <Image Source="../Images/folder.jpg" Stretch="Fill"/>
@@ -42,12 +42,12 @@
         <Button  Name="btnPrevPhoto" Grid.Row="3" Grid.Column="0" Command="{Binding PreviousPhoto}" >
             <Button.Template>
                 <ControlTemplate>
-                    <Image Source="../Images/left.ico" Stretch="Fill"/>
+                    <Image Source="../Images/left.ico" Stretch="Fill" ToolTip="Previous Photo"/>
                 </ControlTemplate>
             </Button.Template>
         </Button>
 
-        <Button Name="btnNextPhoto" Grid.Row="3" Grid.Column="3" Command="{Binding NextPhoto}">
+        <Button Name="btnNextPhoto" Grid.Row="3" Grid.Column="3" Command="{Binding NextPhoto}" ToolTip="Next Photo">
             <Button.Template>
                 <ControlTemplate>
                     <Image Source="../Images/right.ico" Stretch="Fill"/>
@@ -58,7 +58,15 @@
         <Button Name="btnDeletePhoto" Grid.Row="3" Grid.Column="1" Command="{Binding DeletePhoto}" Width="110">
             <Button.Template>
                 <ControlTemplate>
-                    <Image Source="../Images/delete.jpg" Stretch="Fill"/>
+                    <Image Source="../Images/delete.jpg" Stretch="Fill" ToolTip="Delete Photo"/>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+        <Button Name="btnRotatePhoto" Grid.Row="3" Grid.Column="2" Command="{Binding RotatePhoto}" Width="110">
+            <Button.Template>
+                <ControlTemplate>
+                    <Image Source="../Images/rotate.jpg" Stretch="Fill" ToolTip="Rotate Photo"/>
                 </ControlTemplate>
             </Button.Template>
         </Button>
