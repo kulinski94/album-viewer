@@ -54,6 +54,7 @@ namespace Albums.ViewModel
                 RaisePropertyChangedEvent("AlbumName");
             }
         }
+
         public PhotoModel SelectedPhoto
         {
             get
@@ -62,10 +63,31 @@ namespace Albums.ViewModel
             }
             set
             {
+                var image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.UriSource = new Uri(value.Source);
+                image.EndInit();
+                SelectedImage = image;
                 selectedPhotoModel = value;
                 RaisePropertyChangedEvent("SelectedPhoto");
             }
         }
+
+        private BitmapImage selected_image;
+        public BitmapImage SelectedImage
+        {
+            get
+            {
+                return selected_image;
+            }
+            set
+            {
+                selected_image = value;
+                RaisePropertyChangedEvent("SelectedImage");
+            }
+        }
+
         public ICommand NextPhoto
         {
             get { return new DelegateCommand(nextPhoto); }
@@ -73,7 +95,7 @@ namespace Albums.ViewModel
 
         private void nextPhoto()
         {
-            if(SelectedPhoto == null)
+            if (SelectedPhoto == null)
                 return;
             int index = SelectedAlbum.Photos.IndexOf(SelectedPhoto);
             if (selectedAlbum.Photos.Count > index + 1)
