@@ -29,20 +29,20 @@
             <Button Width="80" Command="{Binding ChangeDirectory}">
                 <Button.Template>
                     <ControlTemplate>
-                        <Image Source="../folder.jpg" Stretch="Fill"/>
+                        <Image Source="../Images/folder.jpg" Stretch="Fill"/>
                     </ControlTemplate>
                 </Button.Template>
             </Button>
             <TextBox Name="ImagesDir" Text="{Binding DirectoryPath}" Margin="10,0" Width="200"/>
         </StackPanel>
 
-        <Viewbox Grid.Row="1" Grid.ColumnSpan="4">
-            <Image Source="{Binding SelectedPhoto.Source}" RenderOptions.BitmapScalingMode="Fant" Stretch="Fill" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Center"></Image>
-        </Viewbox>
+        <Border Grid.Row="1" Grid.ColumnSpan="4">
+            <Image Source="{Binding SelectedPhoto.Image}" RenderOptions.BitmapScalingMode="Fant" Stretch="Fill" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Center"></Image>
+        </Border>
         <Button  Name="btnPrevPhoto" Grid.Row="3" Grid.Column="0" Command="{Binding PreviousPhoto}" >
             <Button.Template>
                 <ControlTemplate>
-                    <Image Source="../left.ico" Stretch="Fill"/>
+                    <Image Source="../Images/left.ico" Stretch="Fill"/>
                 </ControlTemplate>
             </Button.Template>
         </Button>
@@ -50,7 +50,7 @@
         <Button Name="btnNextPhoto" Grid.Row="3" Grid.Column="3" Command="{Binding NextPhoto}">
             <Button.Template>
                 <ControlTemplate>
-                    <Image Source="../right.ico" Stretch="Fill"/>
+                    <Image Source="../Images/right.ico" Stretch="Fill"/>
                 </ControlTemplate>
             </Button.Template>
         </Button>
@@ -58,7 +58,7 @@
         <Button Name="btnDeletePhoto" Grid.Row="3" Grid.Column="1" Command="{Binding DeletePhoto}" Width="110">
             <Button.Template>
                 <ControlTemplate>
-                    <Image Source="../delete.jpg" Stretch="Fill"/>
+                    <Image Source="../Images/delete.jpg" Stretch="Fill"/>
                 </ControlTemplate>
             </Button.Template>
         </Button>

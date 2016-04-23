@@ -73,6 +73,8 @@ namespace Albums.ViewModel
 
         private void nextPhoto()
         {
+            if(SelectedPhoto == null)
+                return;
             int index = SelectedAlbum.Photos.IndexOf(SelectedPhoto);
             if (selectedAlbum.Photos.Count > index + 1)
                 SelectedPhoto = SelectedAlbum.Photos.ElementAt(++index);
@@ -85,6 +87,8 @@ namespace Albums.ViewModel
 
         private void previousPhoto()
         {
+            if (SelectedPhoto == null)
+                return;
             int index = SelectedAlbum.Photos.IndexOf(SelectedPhoto);
             if (selectedAlbum.Photos.Count > 0 && index > 0)
                 SelectedPhoto = SelectedAlbum.Photos.ElementAt(--index);
@@ -194,10 +198,19 @@ namespace Albums.ViewModel
         }
         public void deletePhoto()
         {
-            SelectedAlbum.Photos.Remove(SelectedPhoto);
+            if (SelectedAlbum == null || SelectedPhoto == null || !File.Exists(SelectedPhoto.Source))
+                return;
+
+            PhotoModel toDelete = SelectedPhoto;
+            SelectedAlbum.Photos.Remove(toDelete);
             if (SelectedAlbum.Photos.Count > 0)
                 SelectedPhoto = SelectedAlbum.Photos.ElementAt(0);
-            SaveList();
+            else
+            {
+                SelectedPhoto = null;
+            }
+            RaisePropertyChangedEvent("SelectedPhoto");
+            File.Delete(toDelete.Source);
         }
 
         public void deleteAlbum()
