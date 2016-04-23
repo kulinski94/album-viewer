@@ -3,7 +3,6 @@ using FirstFloor.ModernUI.Presentation;
 using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -11,10 +10,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Drawing;
 
 namespace Albums.ViewModel
 {
@@ -27,8 +25,34 @@ namespace Albums.ViewModel
 
         public AlbumViewModel()
         {
-            DirectoryPath = "E:\\";
+            DirectoryPath = "E:\\images\\";
         }
+
+        public AlbumModel SelectedAlbum
+        {
+            get
+            {
+                return selectedAlbum;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    return;
+                }
+                selectedAlbum = value;
+                if (selectedAlbum.Photos.Count > 0)
+                {
+                    SelectedPhoto = selectedAlbum.Photos.ElementAt(0);
+                }
+                else
+                {
+                    SelectedPhoto = null;
+                }
+                RaisePropertyChangedEvent("SelectedAlbum");
+            }
+        }
+
         public string DirectoryPath
         {
             get
@@ -51,13 +75,18 @@ namespace Albums.ViewModel
             }
             set
             {
-                var image = new BitmapImage();
-                image.BeginInit();
-                image.CacheOption = BitmapCacheOption.OnLoad;
-                image.UriSource = new Uri(value.Source);
-                image.EndInit();
-                SelectedImage = image;
+                
                 selectedPhotoModel = value;
+                var image = new BitmapImage();
+                if (value != null)
+                {
+                    image.BeginInit();
+                    image.CacheOption = BitmapCacheOption.OnLoad;
+                    image.UriSource = new Uri(value.Source);
+                    image.EndInit();
+                }
+                image.Freeze();
+                SelectedImage = image;
                 RaisePropertyChangedEvent("SelectedPhoto");
             }
         }
@@ -160,29 +189,18 @@ namespace Albums.ViewModel
             File.Delete(toDelete.Source);
         }
 
-        public AlbumModel SelectedAlbum
+        public ICommand RotatePhoto
         {
-            get
-            {
-                return selectedAlbum;
-            }
-            set
-            {
-                if (value == null)
-                {
-                    return;
-                }
-                selectedAlbum = value;
-                if (selectedAlbum.Photos.Count > 0)
-                {
-                    SelectedPhoto = selectedAlbum.Photos.ElementAt(0);
-                }
-                else
-                {
-                    SelectedPhoto = null;
-                }
-                RaisePropertyChangedEvent("SelectedAlbum");
-            }
+            get { return new DelegateCommand(rotatePhoto); }
         }
+
+        public void rotatePhoto()
+        {
+            Image img = Image.FromFile(SelectedPhoto.Source);
+            img.RotateFlip(RotateFlipType.Rotate90FlipX);
+            img.Save(SelectedPhoto.Source);
+            SelectedPhoto = SelectedPhoto;          
+        }
+
     }
 }

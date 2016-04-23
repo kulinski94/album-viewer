@@ -37,7 +37,7 @@
         </StackPanel>
 
         <Border Grid.Row="1" Grid.ColumnSpan="4">
-            <Image Source="{Binding SelectedImage}" RenderOptions.BitmapScalingMode="Fant" Stretch="Fill" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Center"></Image>
+            <Image Source="{Binding SelectedImage}" ToolTip="{Binding SelectedPhoto.Source}" Stretch="Fill" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Center"></Image>
         </Border>
         <Button  Name="btnPrevPhoto" Grid.Row="3" Grid.Column="0" Command="{Binding PreviousPhoto}" >
             <Button.Template>
