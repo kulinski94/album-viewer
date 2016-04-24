@@ -5,8 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              xmlns:ViewModel="clr-namespace:Albums.ViewModel"
-             mc:Ignorable="d"
-             d:DesignHeight="400" Width="750.5">
+             mc:Ignorable="d">
 
     <UserControl.DataContext>
         <ViewModel:AlbumViewModel/>
@@ -37,7 +36,7 @@
         </StackPanel>
 
         <Border Grid.Row="1" Grid.ColumnSpan="4">
-            <Image Source="{Binding SelectedImage}" ToolTip="{Binding SelectedPhoto.Source}" Stretch="Fill" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Center"></Image>
+            <Image Source="{Binding SelectedImage}" ToolTip="{Binding SelectedPhoto.Source}" Stretch="Uniform" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Center"></Image>
         </Border>
         <Button  Name="btnPrevPhoto" Grid.Row="3" Grid.Column="0" Command="{Binding PreviousPhoto}" >
             <Button.Template>

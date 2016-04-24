@@ -13,6 +13,8 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.Windows.Media;
 
 namespace Albums.ViewModel
 {
@@ -25,7 +27,7 @@ namespace Albums.ViewModel
 
         public AlbumViewModel()
         {
-            DirectoryPath = "E:\\images\\";
+            DirectoryPath = "D:\\TU-SOFIA\\images";
         }
 
         public AlbumModel SelectedAlbum
@@ -63,7 +65,7 @@ namespace Albums.ViewModel
             {
                 directoryPath = value;
                 loadImagesFromDirectory();
-                RaisePropertyChangedEvent("DirectoryPath");              
+                RaisePropertyChangedEvent("DirectoryPath");
             }
         }
 
@@ -75,7 +77,7 @@ namespace Albums.ViewModel
             }
             set
             {
-                
+
                 selectedPhotoModel = value;
                 var image = new BitmapImage();
                 if (value != null)
@@ -90,7 +92,7 @@ namespace Albums.ViewModel
                 RaisePropertyChangedEvent("SelectedPhoto");
             }
         }
-        
+
         public BitmapImage SelectedImage
         {
             get
@@ -178,15 +180,22 @@ namespace Albums.ViewModel
                 return;
 
             PhotoModel toDelete = SelectedPhoto;
-            SelectedAlbum.Photos.Remove(toDelete);
-            if (SelectedAlbum.Photos.Count > 0)
+            try
+            {
+                File.Delete(toDelete.Source);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Cannot delete image!!");
+                return;
+            }
+            if (SelectedAlbum.Photos.Remove(toDelete) && SelectedAlbum.Photos.Count > 0)
                 SelectedPhoto = SelectedAlbum.Photos.ElementAt(0);
             else
             {
                 SelectedPhoto = null;
             }
             RaisePropertyChangedEvent("SelectedPhoto");
-            File.Delete(toDelete.Source);
         }
 
         public ICommand RotatePhoto
@@ -196,10 +205,30 @@ namespace Albums.ViewModel
 
         public void rotatePhoto()
         {
-            Image img = Image.FromFile(SelectedPhoto.Source);
-            img.RotateFlip(RotateFlipType.Rotate90FlipX);
-            img.Save(SelectedPhoto.Source);
-            SelectedPhoto = SelectedPhoto;          
+            // Create the source to use as the tb source.
+            BitmapImage bi = new BitmapImage();
+            bi.BeginInit();
+            bi.CacheOption = BitmapCacheOption.OnLoad;
+            bi.UriSource = new Uri(SelectedPhoto.Source, UriKind.RelativeOrAbsolute);
+            bi.Rotation = rotation(SelectedImage.Rotation);
+            bi.EndInit();  
+            SelectedImage = bi;           
+        }
+
+        private Rotation rotation(Rotation rotation)
+        {
+            switch (rotation)
+            {
+                case Rotation.Rotate0:
+                        return Rotation.Rotate270;
+                case Rotation.Rotate270:
+                    return Rotation.Rotate180;
+                case Rotation.Rotate180:
+                    return Rotation.Rotate90;
+                case Rotation.Rotate90:
+                    return Rotation.Rotate0;
+            }
+            return Rotation.Rotate0;            
         }
 
     }
